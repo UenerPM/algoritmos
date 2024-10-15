@@ -1,10 +1,11 @@
 class Linguca {
-    constructor(tipo, peso, tamanho, dataFabricacao, dono, nivelQualidade) {
+    constructor(id, tipo, peso, tamanho, dataFabricacao, nivelQualidade, posicaoNaLista) {
+        this.id = id
         this.tipo = tipo
         this.peso = peso
         this.tamanho = tamanho
         this.dataFabricacao = dataFabricacao
-        this.dono = dono
         this.nivelQualidade = nivelQualidade
+        this.posicaoNaLista = posicaoNaLista
     }
 }

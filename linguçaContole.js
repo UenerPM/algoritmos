@@ -13,7 +13,7 @@ document.getElementById("inputId").addEventListener("focus", function () {
 function procurePorChavePrimaria(chave) {
     for (let i = 0; i < listaLingucas.length; i++) {
         const linguca = listaLingucas[i];
-        if (linguca.Id == chave) {
+        if (linguca.id == chave) {
             linguca.posicaoNaLista = i; // se achou, guarda nesse atributo a posição na lista (índice)
             return listaLingucas[i];//se achou, interrompe o laço de repetição e devolve a linha inteira
         }
@@ -28,7 +28,7 @@ function procure() {
         linguca = procurePorChavePrimaria(Id);
         if (linguca) { //achou na lista
             mostrarDadosAluno(linguca);
-            visibilidadeDosBotoes('inline', 'none', 
+            visibilidadeDosBotoes('inline', 'none',
                 'inline', 'inline', 'none'); // Habilita botões de alterar e excluir
             mostrarAviso("Achou na lista, pode alterar ou excluir");
         } else { //não achou na lista
@@ -40,6 +40,7 @@ function procure() {
         document.getElementById("inputId").focus();
         return;
     }
+
 }
 
 //backend->frontend
@@ -48,7 +49,7 @@ function inserir() {
     visibilidadeDosBotoes('none', 'none', 'none', 'none', 'inline'); //visibilidadeDosBotoes(procure,inserir,alterar,excluir,salvar)
     oQueEstaFazendo = 'inserindo';
     mostrarAviso("INSERINDO - Digite os atributos e clic o botão salvar");
-    document.getElementById("Id").focus();
+    document.getElementById("inputId").focus();
 
     //para facilitar os testes sem ter que digitar notas (vai sumir quando terminarem os testes)
     document.getElementById("inputPeso").value = 7;
@@ -71,7 +72,7 @@ function alterar() {
 // Função para excluir um elemento da lista
 function excluir() {
     bloquearAtributos(true);
-    document.getElementById("Id").readOnly = true; // bloqueia a chave
+    document.getElementById("inputId").readOnly = true; // bloqueia a chave
     visibilidadeDosBotoes('none', 'none', 'none', 'none', 'inline'); //visibilidadeDosBotoes(procure,inserir,alterar,excluir,salvar)
 
     oQueEstaFazendo = 'excluindo';
@@ -80,32 +81,29 @@ function excluir() {
 
 function salvar() {
     //gerencia operações inserir, alterar e excluir na lista
-    const Id = document.getElementById("Id").value;
+    const Id = document.getElementById("inputId").value;
     const tipo = document.getElementById("inputTipo").value;
-
     let peso = parseFloat(document.getElementById("inputPeso").value);
     let tamanho = parseFloat(document.getElementById("inputTamanho").value);
-    let nota3 = parseFloat(document.getElementById("inputNivelQualidade").value);
-    let nota4 = parseFloat(document.getElementById("inputDataFabricacao").value);
+    let nivelQualidade = parseFloat(document.getElementById("inputNivelQualidade").value);
+    let dataFabricacao = document.getElementById("inputDataFabricacao").value;
 
     //verificar se o que foi digitado pelo USUÁRIO está correto
-    if (Id &&
-        tipo &&
-        !isNaN(parseFloat(peso)) && peso >= 0 && peso <= 10 &&
-        !isNaN(parseFloat(tamanho)) && tamanho >= 0 && tamanho <= 10 &&
-        !isNaN(parseFloat(nota3)) && nota3 >= 0 && nota3 <= 10 &&
-        !isNaN(parseFloat(nota4)) && nota4 >= 0 && nota4 <= 10
+    if (Id && tipo && !isNaN(parseFloat(peso)) && peso && !isNaN(parseFloat(tamanho)) && !isNaN(parseFloat(nivelQualidade)) && nivelQualidade >= 0 && nivelQualidade <= 10 && dataFabricacao
     ) { // se tudo certo 
         switch (oQueEstaFazendo) {
             case 'inserindo':
-                linguca = new Linguca(id, tipo, peso, tamanho, nota3, nota4);
+                linguca = new Linguca(Id, tipo, peso, tamanho, dataFabricacao,nivelQualidade);
                 listaLingucas.push(linguca);
                 mostrarAviso("Inserido na lista");
+                console.log(linguca)
+                console.log(listaLingucas)
                 break;
             case 'alterando':
-                alunoAlterado = new Linguca(id, tipo, peso, tamanho, nota3, nota4);
-                listaLingucas[linguca.posicaoNaLista] = alunoAlterado;
+               lingucaAlterada = new Linguca(Id, tipo, peso, tamanho, dataFabricacao, nivelQualidade);
+                listaLingucas[linguca.posicaoNaLista] = lingucaAlterada;
                 mostrarAviso("Alterado");
+                console.log(lingucaAlterada.dataFabricacao)
                 break;
             case 'excluindo':
                 let novaLista = [];
@@ -124,7 +122,7 @@ function salvar() {
         visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
         limparAtributos();
         listar();
-        document.getElementById("Id").focus();
+        document.getElementById("inputId").focus();
     } else {
         alert("Erro nos dados digitados");
         return;
@@ -136,12 +134,14 @@ function preparaListagem(vetor) {
     let texto = "";
     for (let i = 0; i < vetor.length; i++) {
         const linha = vetor[i];
-        texto += linha.Id + " - " +
+        texto += linha.id + " - " +
             linha.tipo + " - " +
-            linha.peso + " - " +
-            linha.tamanho + " - " +
-            linha.nota3 + " - " +
-            linha.nota4 + "<br>";
+            linha.peso + "g" + " - " +
+            linha.tamanho + "cm" + " - " +
+            linha.nivelQualidade + " - " +
+            linha.dataFabricacao + "<Br>";
+
+
     }
     return texto;
 }
@@ -168,9 +168,9 @@ function mostrarDadosAluno(linguca) {
     document.getElementById("inputTipo").value = linguca.tipo;
     document.getElementById("inputPeso").value = linguca.peso;
     document.getElementById("inputTamanho").value = linguca.tamanho;
-    document.getElementById("inputNivelQualidade").value = linguca.nota3;
-    document.getElementById("inputDataFabricacao").value = linguca.nota4;
-
+    document.getElementById("inputNivelQualidade").value = linguca.nivelQualidade;
+    document.getElementById("inputDataFabricacao").value = linguca.dataFabricacao;
+    console.log(linguca.dataFabricacao)
     // Define os campos como readonly
     bloquearAtributos(true);
 }
@@ -188,7 +188,7 @@ function limparAtributos() {
 
 function bloquearAtributos(soLeitura) {
     //quando recebe valor == true no parâmetro, libera a chave e bloqueia a edição dos outros atributos. Se receber false, faz o contrário.
-    document.getElementById("Id").readOnly = !soLeitura; // sempre ao contrário dos outros atributos
+    document.getElementById("inputId").readOnly = !soLeitura; // sempre ao contrário dos outros atributos
     document.getElementById("inputTipo").readOnly = soLeitura;
     document.getElementById("inputPeso").readOnly = soLeitura;
     document.getElementById("inputTamanho").readOnly = soLeitura;
@@ -208,7 +208,7 @@ function visibilidadeDosBotoes(btProcure, btInserir, btAlterar, btExcluir, btSal
     document.getElementById("btExcluir").style.display = btExcluir;
     document.getElementById("btSalvar").style.display = btSalvar;
     document.getElementById("btCancelar").style.display = btSalvar; // o cancelar sempre aparece junto com o salvar
-    document.getElementById("Id").focus();
+    document.getElementById("inputId").focus();
 }
 
 //backend
@@ -217,19 +217,19 @@ function inserirDadosIniciais() {
     //recarrega a página. Facilita os testes. 
 
     listaLingucas = [];//se houver dados na lista, apaga todos
-    let linguca = new Linguca('111', 'Ana Silva', 8.5, 7.2, 9.0, 8.0);
+    let linguca = new Linguca(111, 'Calabresa', 900, 20, "0012-03-12", 9.1);
     listaLingucas.push(linguca);
-    linguca = new Linguca('222', 'Bruno Costa', 6.3, 5.8, 7.0, 6.5);
+    linguca = new Linguca(222, 'Salame', 300, 5.8, "0012-03-12", 7.5);
     listaLingucas.push(linguca);
-    linguca = new Linguca('333', 'Carla Oliveira', 9.1, 8.7, 9.3, 8.9);
+    linguca = new Linguca(333, 'de xurrasco', 534, 78, "0012-01-12", 9.3);
     listaLingucas.push(linguca);
-    linguca = new Linguca('444', 'Daniel Souza', 7.5, 6.9, 8.0, 7.2);
+    linguca = new Linguca(444, 'de macho', 875437, 4, "0012-02-12", 10);
     listaLingucas.push(linguca);
-    linguca = new Linguca('555', 'Eduardo Lima', 5.6, 7.4, 6.5, 6.8);
+    linguca = new Linguca(555, 'mista', 367.9, 7.4, "0012-07-12", 5);
     listaLingucas.push(linguca);
-    linguca = new Linguca('666', 'Bruno Costa', 3.2, 5.1, 2.0, 1.5);
+    linguca = new Linguca(666, 'Toscana', 234.2, 38, "0012-05-12", 2.0);
     listaLingucas.push(linguca);
-    linguca = new Linguca('777', 'Bernadete Pereira da Costa Larga', 8, 8.1, 8.0, 9.5);
+    linguca = new Linguca(777, 'Portuguesa', 9, 25, "0012-12-12", 8.0);
     listaLingucas.push(linguca);
     listar();
     visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');

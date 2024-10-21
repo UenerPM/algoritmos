@@ -27,7 +27,7 @@ function procure() {
     if (Id) { // se digitou um Id
         linguca = procurePorChavePrimaria(Id);
         if (linguca) { //achou na lista
-            mostrarDadosAluno(linguca);
+            mostrarDadosLinguca(linguca);
             visibilidadeDosBotoes('inline', 'none',
                 'inline', 'inline', 'none'); // Habilita botões de alterar e excluir
             mostrarAviso("Achou na lista, pode alterar ou excluir");
@@ -52,10 +52,9 @@ function inserir() {
     document.getElementById("inputId").focus();
 
     //para facilitar os testes sem ter que digitar notas (vai sumir quando terminarem os testes)
-    document.getElementById("inputPeso").value = 7;
-    document.getElementById("inputTamanho").value = 7;
-    document.getElementById("inputNivelQualidade").value = 7;
-    document.getElementById("inputDataFabricacao").value = 7;
+    document.getElementById("inputPeso").value = 5;
+    document.getElementById("inputTamanho").value = 5;
+    document.getElementById("inputNivelQualidade").value = 5;
 }
 
 // Função para alterar um elemento da lista
@@ -87,23 +86,20 @@ function salvar() {
     let tamanho = parseFloat(document.getElementById("inputTamanho").value);
     let nivelQualidade = parseFloat(document.getElementById("inputNivelQualidade").value);
     let dataFabricacao = document.getElementById("inputDataFabricacao").value;
+    let sommelier = document.getElementById("inputSommelier").value
 
     //verificar se o que foi digitado pelo USUÁRIO está correto
-    if (Id && tipo && !isNaN(parseFloat(peso)) && peso && !isNaN(parseFloat(tamanho)) && !isNaN(parseFloat(nivelQualidade)) && nivelQualidade >= 0 && nivelQualidade <= 10 && dataFabricacao
-    ) { // se tudo certo 
+    if (Id && tipo && !isNaN(parseFloat(peso)) && peso && !isNaN(parseFloat(tamanho)) && !isNaN(parseFloat(nivelQualidade)) && nivelQualidade >= 0 && nivelQualidade <= 10 && dataFabricacao  && sommelier) { // se tudo certo 
         switch (oQueEstaFazendo) {
             case 'inserindo':
-                linguca = new Linguca(Id, tipo, peso, tamanho, dataFabricacao,nivelQualidade);
+                linguca = new Linguca(Id, tipo, peso, tamanho, dataFabricacao,nivelQualidade, sommelier);
                 listaLingucas.push(linguca);
                 mostrarAviso("Inserido na lista");
-                console.log(linguca)
-                console.log(listaLingucas)
                 break;
             case 'alterando':
-               lingucaAlterada = new Linguca(Id, tipo, peso, tamanho, dataFabricacao, nivelQualidade);
+               lingucaAlterada = new Linguca(Id, tipo, peso, tamanho, dataFabricacao, nivelQualidade, sommelier);
                 listaLingucas[linguca.posicaoNaLista] = lingucaAlterada;
                 mostrarAviso("Alterado");
-                console.log(lingucaAlterada.dataFabricacao)
                 break;
             case 'excluindo':
                 let novaLista = [];
@@ -134,12 +130,14 @@ function preparaListagem(vetor) {
     let texto = "";
     for (let i = 0; i < vetor.length; i++) {
         const linha = vetor[i];
-        texto += linha.id + " - " +
+        texto += "<br>"+
+            linha.sommelier+ "<br>"+
+            "ID: "+linha.id + " - " +
             linha.tipo + " - " +
             linha.peso + "g" + " - " +
             linha.tamanho + "cm" + " - " +
             linha.nivelQualidade + " - " +
-            linha.dataFabricacao + "<Br>";
+            "Data: "+linha.dataFabricacao + "<Br>";
 
 
     }
@@ -164,12 +162,13 @@ function mostrarAviso(mensagem) {
 }
 
 // Função para mostrar os dados do linguca nos campos
-function mostrarDadosAluno(linguca) {
+function mostrarDadosLinguca(linguca) {
     document.getElementById("inputTipo").value = linguca.tipo;
     document.getElementById("inputPeso").value = linguca.peso;
     document.getElementById("inputTamanho").value = linguca.tamanho;
     document.getElementById("inputNivelQualidade").value = linguca.nivelQualidade;
     document.getElementById("inputDataFabricacao").value = linguca.dataFabricacao;
+    document.getElementById("inputSommelier").value = linguca.sommelier
     console.log(linguca.dataFabricacao)
     // Define os campos como readonly
     bloquearAtributos(true);
@@ -182,6 +181,7 @@ function limparAtributos() {
     document.getElementById("inputTamanho").value = "";
     document.getElementById("inputNivelQualidade").value = "";
     document.getElementById("inputDataFabricacao").value = "";
+    document.getElementById("inputSommelier").value = ""
 
     bloquearAtributos(true);
 }
@@ -194,6 +194,8 @@ function bloquearAtributos(soLeitura) {
     document.getElementById("inputTamanho").readOnly = soLeitura;
     document.getElementById("inputNivelQualidade").readOnly = soLeitura;
     document.getElementById("inputDataFabricacao").readOnly = soLeitura;
+    document.getElementById("inputDataFabricacao").readOnly = soLeitura;
+    document.getElementById("inputSommelier").readOnly = soLeitura;
 }
 
 // Função para deixar visível ou invisível os botões
@@ -217,19 +219,19 @@ function inserirDadosIniciais() {
     //recarrega a página. Facilita os testes. 
 
     listaLingucas = [];//se houver dados na lista, apaga todos
-    let linguca = new Linguca(111, 'Calabresa', 900, 20, "0012-03-12", 9.1);
+    let linguca = new Linguca(111, 'Calabresa', 900, 20, "0012-03-12", 9.1,"lanhão");
     listaLingucas.push(linguca);
-    linguca = new Linguca(222, 'Salame', 300, 5.8, "0012-03-12", 7.5);
+    linguca = new Linguca(222, 'Salame', 300, 5.8, "0012-03-12", 7.5,"grigo burro");
     listaLingucas.push(linguca);
-    linguca = new Linguca(333, 'de xurrasco', 534, 78, "0012-01-12", 9.3);
+    linguca = new Linguca(333, 'de xurrasco', 534, 78, "0012-01-12", 9.3,"xana movél");
     listaLingucas.push(linguca);
-    linguca = new Linguca(444, 'de macho', 875437, 4, "0012-02-12", 10);
+    linguca = new Linguca(444, 'de macho', 875437, 4, "0012-02-12", 10,"Alexandre");
     listaLingucas.push(linguca);
-    linguca = new Linguca(555, 'mista', 367.9, 7.4, "0012-07-12", 5);
+    linguca = new Linguca(555, 'mista', 367.9, 7.4, "0012-07-12", 5,"chupi-chupi-gozatron");
     listaLingucas.push(linguca);
-    linguca = new Linguca(666, 'Toscana', 234.2, 38, "0012-05-12", 2.0);
+    linguca = new Linguca(666, 'Toscana', 234.2, 38, "0012-05-12", 2.0,"eu");
     listaLingucas.push(linguca);
-    linguca = new Linguca(777, 'Portuguesa', 9, 25, "0012-12-12", 8.0);
+    linguca = new Linguca(777, 'Portuguesa', 9, 25, "0012-12-12", 8.0,"vaido");
     listaLingucas.push(linguca);
     listar();
     visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');

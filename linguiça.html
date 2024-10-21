@@ -9,7 +9,7 @@
 
 <body>
 
-    <h1>Cadastro de Linguças e suas notas</h1>
+    <h1>Cadastro de Linguças e suas Sommeliers</h1>
 
     <label for="inputId">Id</label>
     <input type="text" name="inputId" id="inputId">
@@ -21,20 +21,18 @@
     <label for="inputTipo">Tipo</label>
     <input type="text" name="inputTipo" id="inputTipo">
     <br><br>
-    
     <label for="inputPeso">Peso(g)</label>
     <input type="number" name="inputPeso" id="inputPeso" step="0.1">
-    
     <label for="inputTamanho">Tamanho(cm)</label>
     <input type="number" name="inputTamanho" id="inputTamanho" step="0.1">
-    
     <label for="inputNivelQualidade">Nivel de Qualidade</label>
     <input type="number" name="inputNivelQualidade" id="inputNivelQualidade" min="1" max="10" step="0.1">
-
     <br><br>
     <label for="inputDataFabricacao">Data de Fabricação</label>
     <input type="date" name="inputDataFabricacao" id="inputDataFabricacao">
-   
+    <br><br>
+    <label for="inputSommelier">Sommelier</label >
+    <input type="text" name="inputSommelier" id="inputSommelier">
     <br><br>
     <div id="divAviso" style="background-color: antiquewhite;"></div>
     <br>
@@ -44,8 +42,8 @@
     <!-- <input type="button" value="Listar" onclick="listar()">
     <br><br> -->
 
-    <div id="outputSaida" style="background-color: aqua;">...</div>
-    
+    <div id="outputSaida" style="color: rgb(87, 0, 0);">...</div>
+
     <script src="./linguça.js"></script>
     <script src="./linguçaContole.js"></script>
 </body>

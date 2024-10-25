@@ -32,9 +32,7 @@ function ordenaAlfabeticamente(arrayDePalavras) {
 
 
 function ordenarLista() {
-    const palavras = ["ana maria", "ana belgica", "laranja", "a-abacaxi"];
     const palavrasOrdenadas = ordenaAlfabeticamente(listaLingucas);
-    document.getElementById("divListaAntes").innerHTML = preparaListagem(palavrasOrdenadas);
 
 
 }
@@ -62,11 +60,13 @@ function procure() {
     if (Id) { // se digitou um Id
         linguca = procurePorChavePrimaria(Id);
         if (linguca) { //achou na lista
+            bloquearAtributos(false)
             mostrarDadosLinguca(linguca);
             visibilidadeDosBotoes('inline', 'none',
                 'inline', 'inline', 'none'); // Habilita botões de alterar e excluir
             mostrarAviso("Achou na lista, pode alterar ou excluir");
         } else { //não achou na lista
+            bloquearAtributos(false)
             limparAtributos();
             visibilidadeDosBotoes('inline', 'inline', 'none', 'none', 'none');
             mostrarAviso("Não achou na lista, pode inserir");
@@ -181,7 +181,7 @@ function preparaListagem(vetor) {
 
 //backend->frontend (interage com html)
 function listar() {
-    document.getElementById("outputSaida").innerHTML = preparaListagem(listaLingucas);
+    document.getElementById("outputSaida").innerHTML = preparaListagem(ordenaAlfabeticamente(listaLingucas));
 }
 
 function cancelarOperacao() {
@@ -219,7 +219,7 @@ function limparAtributos() {
 
     bloquearAtributos(true);
 }
-
+//lembrar o professor do bug no codigo
 function bloquearAtributos(soLeitura) {
     //quando recebe valor == true no parâmetro, libera a chave e bloqueia a edição dos outros atributos. Se receber false, faz o contrário.
     document.getElementById("inputId").readOnly = !soLeitura; // sempre ao contrário dos outros atributos

@@ -8,7 +8,10 @@ window.onload = inserirDadosIniciais();
 function ordenaAlfabeticamente(arrayDePalavras) {
     const comprimentoDoArray = arrayDePalavras.length;
     let houveTroca;
-
+    //if (arrayMAsculo[i].sommelier > arrayMAsculo[i + 1].sommelier) {
+    //let arrayMAsculo= []
+   // arrayMAsculo.push(arrayDePalavras.sommelier.toUperCase())
+    
     // Bubble Sort
     for (let j = 0; j < comprimentoDoArray; j++) {
         houveTroca = false;
@@ -271,4 +274,85 @@ function inserirDadosIniciais() {
     listar();
     visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');
     bloquearAtributos(true);
+}
+
+
+
+function salvarNoComputador() {
+    nomeParaSalvar = "./LINGUÇAS GIGANTES.csv";
+    let textoCSV = "";
+    for (let i = 0; i < listaLingucas.length; i++) {
+        const linha = listaLingucas[i];
+        textoCSV += linha.id + ";" +
+            linha.tipo + ";" +
+            linha.peso + ";" +
+            linha.tamanho + ";" +
+            linha.dataFabricacao + ";" +
+            linha.nivelQualidade + ";" +
+            linha.sommelier + "\n";
+    }
+
+    salvarEmArquivo(nomeParaSalvar, textoCSV);
+}
+
+
+function salvarEmArquivo(nomeArq, conteudo) {
+    // Cria um blob com o conteúdo em formato de texto
+    const blob = new Blob([conteudo], { type: 'text/plain' });
+    // Cria um link temporário para o download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = nomeArq; // Nome do arquivo de download
+    // Simula o clique no link para iniciar o download
+    link.click();
+    // Libera o objeto URL
+    URL.revokeObjectURL(link.href);
+}
+
+
+// Função para abrir o seletor de arquivos para upload
+function buscarDadosSalvosNoComputador() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv'; // Aceita apenas arquivos CSV
+    input.onchange = function (event) {
+        const arquivo = event.target.files[0];
+        console.log(arquivo.name);
+        if (arquivo) {
+            processarArquivo(arquivo);
+        }
+    };
+    input.click(); // Simula o clique para abrir o seletor de arquivos
+
+}
+
+// Função para processar o arquivo CSV e transferir os dados para a listaMusica
+function processarArquivo(arquivo) {
+    const leitor = new FileReader();
+    leitor.onload = function (e) {
+        const conteudo = e.target.result; // Conteúdo do arquivo CSV
+        const linhas = conteudo.split('\n'); // Separa o conteúdo por linha
+        listaLingucas = []; // Limpa a lista atual (se necessário)
+        for (let i = 0; i < linhas.length; i++) {
+            const linha = linhas[i].trim();
+            if (linha) {
+                const dados = linha.split(';'); // Separa os dados por ';'
+                if (dados.length === 7) {
+                    // Adiciona os dados à listaMusica como um objeto
+                    listaLingucas.push({
+                        id: dados[0],
+                        tipo: dados[1],
+                        peso: dados[2],
+                        tamanho: dados[3],
+                        dataFabricacao: dados[4],
+                        nivelQualidade: dados[5],
+                        sommelier: dados[6]
+                    });
+                }
+            }
+        }
+        // console.log("Upload concluído!", listaMusica); // Exibe no console a lista atualizada
+        listar();
+    };
+    leitor.readAsText(arquivo); // Lê o arquivo como texto
 }

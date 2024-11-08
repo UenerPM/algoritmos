@@ -60,13 +60,10 @@ function procure() {
     if (Id) { // se digitou um Id
         linguca = procurePorChavePrimaria(Id);
         if (linguca) { //achou na lista
-            bloquearAtributos(false)
             mostrarDadosLinguca(linguca);
-            visibilidadeDosBotoes('inline', 'none',
-                'inline', 'inline', 'none'); // Habilita botões de alterar e excluir
+            visibilidadeDosBotoes('inline', 'none','inline', 'inline', 'none'); // Habilita botões de alterar e excluir
             mostrarAviso("Achou na lista, pode alterar ou excluir");
         } else { //não achou na lista
-            bloquearAtributos(false)
             limparAtributos();
             visibilidadeDosBotoes('inline', 'inline', 'none', 'none', 'none');
             mostrarAviso("Não achou na lista, pode inserir");
@@ -85,11 +82,6 @@ function inserir() {
     oQueEstaFazendo = 'inserindo';
     mostrarAviso("INSERINDO - Digite os atributos e clic o botão salvar");
     document.getElementById("inputId").focus();
-
-    //para facilitar os testes sem ter que digitar notas (vai sumir quando terminarem os testes)
-    document.getElementById("inputPeso").value = 5;
-    document.getElementById("inputTamanho").value = 5;
-    document.getElementById("inputNivelQualidade").value = 5;
 }
 
 // Função para alterar um elemento da lista
@@ -114,14 +106,23 @@ function excluir() {
 }
 
 function salvar() {
+    let Id;
+    if (linguca == null) {
+        Id = document.getElementById("inputId").value;
+    } else {
+        Id = linguca.id;
+    }
+
+
+
+
     //gerencia operações inserir, alterar e excluir na lista
-    const Id = document.getElementById("inputId").value;
     const tipo = document.getElementById("inputTipo").value;
-    let peso = parseFloat(document.getElementById("inputPeso").value);
-    let tamanho = parseFloat(document.getElementById("inputTamanho").value);
-    let nivelQualidade = parseFloat(document.getElementById("inputNivelQualidade").value);
-    let dataFabricacao = document.getElementById("inputDataFabricacao").value;
-    let sommelier = document.getElementById("inputSommelier").value
+    const peso = parseFloat(document.getElementById("inputPeso").value);
+    const tamanho = parseFloat(document.getElementById("inputTamanho").value);
+    const nivelQualidade = parseFloat(document.getElementById("inputNivelQualidade").value);
+    const dataFabricacao = document.getElementById("inputDataFabricacao").value;
+    const sommelier = document.getElementById("inputSommelier").value
 
     //verificar se o que foi digitado pelo USUÁRIO está correto
     if (Id && tipo && !isNaN(parseFloat(peso)) && peso && !isNaN(parseFloat(tamanho)) && !isNaN(parseFloat(nivelQualidade)) && nivelQualidade >= 0 && nivelQualidade <= 10 && dataFabricacao && sommelier) { // se tudo certo 

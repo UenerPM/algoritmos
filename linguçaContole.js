@@ -5,31 +5,47 @@ let linguca = null; //variavel global
 window.onload = inserirDadosIniciais();
 
 
+
+
+function deixarMaiusculo(vetor) {
+    let arrayMAsculo = []
+    for (let i = 0; i < vetor.length; i++) {
+        let palavra = vetor[i].sommelier
+        arrayMAsculo.push(palavra.toUpperCase())
+    }
+    return arrayMAsculo
+}
+
+
 function ordenaAlfabeticamente(arrayDePalavras) {
+    let vetorFodao = deixarMaiusculo(arrayDePalavras)
     const comprimentoDoArray = arrayDePalavras.length;
     let houveTroca;
-    //if (arrayMAsculo[i].sommelier > arrayMAsculo[i + 1].sommelier) {
-    //let arrayMAsculo= []
-   // arrayMAsculo.push(arrayDePalavras.sommelier.toUperCase())
-    
+    console.log (vetorFodao)
+
     // Bubble Sort
     for (let j = 0; j < comprimentoDoArray; j++) {
         houveTroca = false;
         for (let i = 0; i < comprimentoDoArray - 1; i++) {
             // Compara duas palavras
-            if (arrayDePalavras[i].sommelier > arrayDePalavras[i + 1].sommelier) {
-                // Troca as palavras se estiverem na ordem errada
-                const palavraTemporaria = arrayDePalavras[i];
-                arrayDePalavras[i] = arrayDePalavras[i + 1];
-                arrayDePalavras[i + 1] = palavraTemporaria;
-                houveTroca = true;
-            }
-        }
-        // Se não houve troca, o array já está ordenado
-        if (!houveTroca) break;
-    }
+            //if (arrayDePalavras[i].sommelier > arrayDePalavras[i + 1].sommelier) { 
+            if (vetorFodao[i] > vetorFodao[i + 1]) {
+            // Troca as palavras se estiverem na ordem errada
+            const palavraTemporaria = arrayDePalavras[i];
+            arrayDePalavras[i] = arrayDePalavras[i + 1];
+            arrayDePalavras[i + 1] = palavraTemporaria;
 
-    return arrayDePalavras;
+            const palavraMaiusculaTemporaria = vetorFodao[i];
+            vetorFodao[i] = vetorFodao[i + 1];
+            vetorFodao[i + 1] = palavraMaiusculaTemporaria;
+            houveTroca = true;
+        }
+    }
+    // Se não houve troca, o array já está ordenado
+    if (!houveTroca) break;
+}
+
+return arrayDePalavras;
 }
 
 
@@ -64,7 +80,7 @@ function procure() {
         linguca = procurePorChavePrimaria(Id);
         if (linguca) { //achou na lista
             mostrarDadosLinguca(linguca);
-            visibilidadeDosBotoes('inline', 'none','inline', 'inline', 'none'); // Habilita botões de alterar e excluir
+            visibilidadeDosBotoes('inline', 'none', 'inline', 'inline', 'none'); // Habilita botões de alterar e excluir
             mostrarAviso("Achou na lista, pode alterar ou excluir");
         } else { //não achou na lista
             limparAtributos();
@@ -270,6 +286,8 @@ function inserirDadosIniciais() {
     linguca = new Linguca(666, 'Toscana', 234.2, 38, "0012-05-12", 2.0, "eu");
     listaLingucas.push(linguca);
     linguca = new Linguca(777, 'Portuguesa', 9, 25, "0012-12-12", 8.0, "vaido");
+    listaLingucas.push(linguca);
+    linguca = new Linguca(877, 'Portuguesa', 9, 25, "0012-12-12", 8.0, "VAIDO");
     listaLingucas.push(linguca);
     listar();
     visibilidadeDosBotoes('inline', 'none', 'none', 'none', 'none');

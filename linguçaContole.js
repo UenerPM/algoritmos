@@ -7,37 +7,20 @@ window.onload = inserirDadosIniciais();
 
 
 
-function deixarMaiusculo(vetor) {
-    let arrayMAsculo = []
-    for (let i = 0; i < vetor.length; i++) {
-        let palavra = vetor[i].sommelier
-        arrayMAsculo.push(palavra.toUpperCase())
-    }
-    return arrayMAsculo
-}
-
-
 function ordenaAlfabeticamente(arrayDePalavras) {
-    let vetorFodao = deixarMaiusculo(arrayDePalavras)
     const comprimentoDoArray = arrayDePalavras.length;
     let houveTroca;
-    console.log (vetorFodao)
-
     // Bubble Sort
     for (let j = 0; j < comprimentoDoArray; j++) {
         houveTroca = false;
         for (let i = 0; i < comprimentoDoArray - 1; i++) {
             // Compara duas palavras
-            //if (arrayDePalavras[i].sommelier > arrayDePalavras[i + 1].sommelier) { 
-            if (vetorFodao[i] > vetorFodao[i + 1]) {
+            if (arrayDePalavras[i].sommelier.toUpperCase() > arrayDePalavras[i + 1].sommelier.toUpperCase()) { 
             // Troca as palavras se estiverem na ordem errada
             const palavraTemporaria = arrayDePalavras[i];
             arrayDePalavras[i] = arrayDePalavras[i + 1];
             arrayDePalavras[i + 1] = palavraTemporaria;
 
-            const palavraMaiusculaTemporaria = vetorFodao[i];
-            vetorFodao[i] = vetorFodao[i + 1];
-            vetorFodao[i + 1] = palavraMaiusculaTemporaria;
             houveTroca = true;
         }
     }
@@ -47,7 +30,6 @@ function ordenaAlfabeticamente(arrayDePalavras) {
 
 return arrayDePalavras;
 }
-
 
 
 function ordenarLista() {
